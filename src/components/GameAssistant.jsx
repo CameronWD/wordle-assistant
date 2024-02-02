@@ -51,7 +51,7 @@ function GameAssistant() {
 
     return (
         <div>
-            <h2>Wordle Assistant</h2>
+            <h2 className='heading'>Wordle Assistant</h2>
             <InputForm onUpdate={updatePossibleWords} onReset={resetGame} />
             <SuggestionsDisplay possibleWords={possibleWords} />
         </div>

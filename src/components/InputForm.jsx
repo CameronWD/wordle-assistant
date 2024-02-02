@@ -51,8 +51,8 @@ function InputForm({ onUpdate, onReset }) {
 
     return (
         <form className="input-form">
-            <div className="input-group">
-                <label className="input-label">Green </label>
+            <div className="input-group" id='green'>
+                <label className="input-label">Green Letters</label>
                 {greens.map((green, index) => (
                     <input
                         key={index}
@@ -65,41 +65,49 @@ function InputForm({ onUpdate, onReset }) {
                 ))}
             </div>
 
-            <div className="input-group">
-                <label className="input-label">Yellow</label>
-                {yellowLetters.map((yellow, index) => (
-                    <div key={index} className="yellow-letter-group">
-                        <input
-                            type="text"
-                            value={yellow.letter}
-                            onChange={handleYellowLetterChange(index)}
-                            maxLength={1}
-                            className={`yellow-letter-input ${yellow.letter ? 'has-letter' : ''}`}
-                        />
-                        <input
-                            type="text"
-                            value={yellow.positions}
-                            onChange={handleYellowPositionsChange(index)}
-                            maxLength={5}
-                            className={`yellow-positions-input ${yellow.positions ? 'has-letter' : ''}`}
-                        />
-                    </div>
-                ))}
-                <button type="button" onClick={addYellowLetter} className="add-yellow-btn">Add Yellow</button>
-            </div>
+            <div className="input-group" id='yellow'>
+    <div className="centered-content">
+        <label className="input-label">Yellow Letters</label>
+        <button type="button" onClick={addYellowLetter} className="custom-button">Add Yellow</button>
+    </div>
+    {yellowLetters.map((yellow, index) => (
+        <div key={index} className="yellow-letter-group">
+            <span className="label">Letter:</span>
+            <input
+                type="text"
+                value={yellow.letter}
+                onChange={handleYellowLetterChange(index)}
+                maxLength={1}
+                className={`w-20 uppercase border border-gray-400 rounded mr-4 yellow-letter-input ${yellow.letter ? 'has-letter' : ''}`}
+            />
+            <span className={"label"}>Positions:</span>
+            <input
+                type="text"
+                value={yellow.positions}
+                onChange={handleYellowPositionsChange(index)}
+                maxLength={5}
+                className={`w-60 uppercase border border-gray-400 rounded mr-4 yellow-positions-input ${yellow.positions ? 'has-letter' : ''} positions-box`}
+                placeholder='nums'
+            />
+        </div>
+    ))}
+</div>
 
-            <div className="input-group">
-                <label className="input-label">Grey</label>
+
+
+            <div className="input-group" id='grey'>
+                <label className="input-label">Grey Letters</label>
                 <input
                     type="text"
                     value={greys}
                     onChange={handleGreyChange}
                     className={`grey-input ${greys ? 'has-letter' : ''}`}
+                    placeholder='letters here'
                 />
             </div>
 
             <div className="reset-btn-group">
-                <button type="button" onClick={handleReset} className="reset-btn">Reset Game</button>
+                <button type="button" onClick={handleReset} className="custom-button">Reset Game</button>
             </div>
         </form>
     );

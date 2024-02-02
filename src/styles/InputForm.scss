@@ -1,27 +1,48 @@
-
-
 .input-form {
-
+    border-radius: 1px;
 }
 
 .input-group {
+    padding-top: 1rem;
+    border: 2px solid #000; 
+}
 
+#green {
+    background-color: grey;
+    padding: 1rem;
+    border-top: 4px solid #000; 
+}
+#yellow {
+    background-color: green;
+    padding: 1rem;
+    text-align: center; 
+}
+#grey {
+    background-color: yellow;
+    padding: 1rem;
+    border-bottom: 4px solid #000; 
 }
 
 .input-label {
-
+    padding-right: 2rem;
+    font-weight: 500;
 }
 
 .green-input, .yellow-letter-input, .yellow-positions-input {
+    border: 1px solid #000; 
     margin-right: 4px;
     width: 20px; 
     text-transform: uppercase;
+    border-radius: 1px;
 
     &.has-letter {
         background-color: lightgreen; 
     }
 }
 
+.positions-box {
+    width: 5rem;
+}
 .yellow-letter-input, .yellow-positions-input {
     &.has-letter {
         background-color: lightyellow; 
@@ -31,17 +52,38 @@
 .grey-input {
     width: 10rem; 
     text-transform: uppercase;
-
+    border: 1px solid #000; 
     &.has-letter {
         background-color: lightgrey; 
     }
 }
 
-.add-yellow-btn, .reset-btn {
-
-}
-
 .yellow-letter-group {
-
+    margin-top: 1rem; 
+    text-align: center; 
 }
 
+.custom-button {
+    display: inline-block;
+    outline: 0;
+    border: 0;
+    cursor: pointer;
+    border-radius: 20px;
+    padding: 10px;
+    line-height: 1;
+    transition: transform 200ms, background 200ms;
+    background: linear-gradient(90deg, yellow, orange);
+    background-size: 400% 400%;
+	animation: gradient 8s ease infinite;
+    color: #000000;
+    box-shadow: 0 0 0 2px #000000 inset;
+}
+
+.custom-button:hover {
+    transform: translateY(-2px);
+}
+
+.reset-btn-group {
+    background: none;
+    padding: 1.25rem;
+}
