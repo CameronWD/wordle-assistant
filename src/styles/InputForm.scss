@@ -1,0 +1,47 @@
+
+
+.input-form {
+
+}
+
+.input-group {
+
+}
+
+.input-label {
+
+}
+
+.green-input, .yellow-letter-input, .yellow-positions-input {
+    margin-right: 4px;
+    width: 20px; 
+    text-transform: uppercase;
+
+    &.has-letter {
+        background-color: lightgreen; 
+    }
+}
+
+.yellow-letter-input, .yellow-positions-input {
+    &.has-letter {
+        background-color: lightyellow; 
+    }
+}
+
+.grey-input {
+    width: 10rem; 
+    text-transform: uppercase;
+
+    &.has-letter {
+        background-color: lightgrey; 
+    }
+}
+
+.add-yellow-btn, .reset-btn {
+
+}
+
+.yellow-letter-group {
+
+}
+
