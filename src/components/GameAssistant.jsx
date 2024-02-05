@@ -2,16 +2,18 @@ import React, { useState, useCallback } from 'react';
 import wordList from '../data/wordlist.json';
 import InputForm from './InputForm';
 import SuggestionsDisplay from './SuggestionsDisplay';
+import GameReview from './GameReview';
 
 function GameAssistant() {
     const [possibleWords, setPossibleWords] = useState([...wordList]);
+    const [gameHistory, setGameHistory] = useState([]); 
 
     const countUniqueLetters = word => {
         const uniqueLetters = new Set(word);
         return uniqueLetters.size;
     };
 
-    const updatePossibleWords = useCallback((greens, yellows, greys) => {
+    const updatePossibleWords = useCallback((greens, yellows, greys, currentGuess) => {
         const filteredWords = wordList.filter(word => {
             for (let i = 0; i < greens.length; i++) {
                 if (greens[i] && word[i] !== greens[i]) {
@@ -38,15 +40,19 @@ function GameAssistant() {
                     }
                 }
             }
+            
             return true;
         });
-
+        const possibleWordsCount = filteredWords.length;
+        setGameHistory(history => [...history, { guess: currentGuess, possibleWords: possibleWordsCount }]);
         filteredWords.sort((a, b) => countUniqueLetters(b) - countUniqueLetters(a));
         setPossibleWords(filteredWords);
+        return possibleWordsCount;
     }, []);
 
     const resetGame = () => {
         setPossibleWords([...wordList]);
+        setGameHistory([]); 
     };
 
     return (
@@ -54,6 +60,7 @@ function GameAssistant() {
             <h2 className='heading'>Wordle Assistant</h2>
             <InputForm onUpdate={updatePossibleWords} onReset={resetGame} />
             <SuggestionsDisplay possibleWords={possibleWords} />
+            <GameReview history={gameHistory} /> 
         </div>
     );
 }

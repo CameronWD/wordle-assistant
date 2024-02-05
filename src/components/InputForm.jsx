@@ -1,114 +1,110 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import '../styles/InputForm.scss';
 
 function InputForm({ onUpdate, onReset }) {
-    const [greens, setGreens] = useState(Array(5).fill(''));
-    const [yellowLetters, setYellowLetters] = useState([]);
-    const [greys, setGreys] = useState('');
+    const [currentGuess, setCurrentGuess] = useState(Array(5).fill(''));
+    const [currentColors, setCurrentColors] = useState(Array(5).fill('grey'));
+    const [guesses, setGuesses] = useState([]);
+    const inputRefs = useRef([]);
 
     useEffect(() => {
-        const processedYellowLetters = yellowLetters.map(item => ({
-            ...item,
-            positions: item.positions.split('').filter(pos => pos >= '1' && pos <= '5')
-        }));
-        onUpdate(greens, processedYellowLetters, greys);
-    }, [greens, yellowLetters, greys, onUpdate]);
+        inputRefs.current = inputRefs.current.slice(0, currentGuess.length);
+    }, [currentGuess.length])
 
-    const handleGreenChange = (position) => (event) => {
-        const newGreens = [...greens];
-        newGreens[position] = event.target.value.toLowerCase();
-        setGreens(newGreens);
+    const handleLetterChange = (index) => (event) => {
+        const newGuess = [...currentGuess];
+        newGuess[index] = event.target.value.toLowerCase();
+        setCurrentGuess(newGuess);
+
+        if(newGuess[index].length === 1 && index < currentGuess.length - 1) {
+            inputRefs.current[index + 1].focus();
+        }
     };
 
-    const addYellowLetter = () => {
-        setYellowLetters([...yellowLetters, { letter: '', positions: '' }]);
+    const handleColorChange = (index) => (event) => {
+        const newColors = [...currentColors];
+        newColors[index] = event.target.value;
+        setCurrentColors(newColors);
     };
 
-    const handleYellowLetterChange = (index) => (event) => {
-        const updatedYellows = yellowLetters.map((item, idx) =>
-            idx === index ? { ...item, letter: event.target.value.toLowerCase() } : item
-        );
-        setYellowLetters(updatedYellows);
-    };
+    const handleSubmitGuess = () => {
+        if (currentGuess.join('').length === 5 && !currentColors.includes('')) {
+            const greens = currentGuess.map((letter, idx) => currentColors[idx] === 'green' ? letter : '').filter(Boolean);
+            const yellowLetters = currentGuess.map((letter, idx) => currentColors[idx] === 'yellow' ? letter : '').filter(Boolean);
+            const greys = currentGuess.filter((letter, idx) => currentColors[idx] === 'grey');
 
-    const handleYellowPositionsChange = (index) => (event) => {
-        const updatedYellows = yellowLetters.map((item, idx) =>
-            idx === index ? { ...item, positions: event.target.value } : item
-        );
-        setYellowLetters(updatedYellows);
-    };
+            const yellows = yellowLetters.map(letter => ({
+                letter,
+                positions: currentGuess.reduce((acc, curr, idx) => {
+                    if (curr === letter && currentColors[idx] !== 'green') {
+                        acc.push(idx + 1);
+                    }
+                    return acc;
+                }, [])
+            }));
 
-    const handleGreyChange = (event) => {
-        setGreys(event.target.value.toLowerCase());
+            const possibleWordsCount = onUpdate(greens, yellows, greys, currentGuess.join(''));
+            setGuesses([...guesses, { guess: currentGuess, colors: currentColors, possibleWords: possibleWordsCount }]);
+            setCurrentGuess(Array(5).fill(''));
+            setCurrentColors(Array(5).fill('grey'));
+        }
     };
 
     const handleReset = () => {
         onReset();
-        setGreens(Array(5).fill(''));
-        setYellowLetters([]);
-        setGreys('');
+        setCurrentGuess(Array(5).fill(''));
+        setCurrentColors(Array(5).fill('grey'));
+        setGuesses([]);
     };
 
     return (
-        <form className="input-form">
-            <div className="input-group" id='green'>
-                <label className="input-label">Green Letters</label>
-                {greens.map((green, index) => (
-                    <input
-                        key={index}
-                        type="text"
-                        value={green}
-                        onChange={handleGreenChange(index)}
-                        maxLength={1}
-                        className={`green-input ${green ? 'has-letter' : ''}`}
-                    />
+        <form className="input-form" onSubmit={(e) => e.preventDefault()}>
+            {guesses.map((entry, index) => (
+                <div key={index} className="guess-entry">
+                    <div className="submitted-guess">
+                        {entry.guess.map((letter, idx) => (
+                            <div key={idx} className={`guess-box ${entry.colors[idx]}`}>{letter.toUpperCase()}</div>
+                        ))}
+                    </div>
+                    <div className="possible-words-count">
+                        Possible words left: {entry.possibleWords}
+                    </div>
+                </div>
+            ))}
+
+            <div className="input-group horizontal" id='current-guess'>
+                {currentGuess.map((letter, index) => (
+                    <div key={index} className="letter-input">
+                        <input
+                            type="text"
+                            value={letter}
+                            onChange={handleLetterChange(index)}
+                            maxLength={1}
+                            className="guess-input"
+                            ref={el => inputRefs.current[index] = el}
+                        />
+                    </div>
                 ))}
             </div>
 
-            <div className="input-group" id='yellow'>
-    <div className="centered-content">
-        <label className="input-label">Yellow Letters</label>
-        <button type="button" onClick={addYellowLetter} className="custom-button">Add Yellow</button>
-    </div>
-    {yellowLetters.map((yellow, index) => (
-        <div key={index} className="yellow-letter-group">
-            <span className="label">Letter:</span>
-            <input
-                type="text"
-                value={yellow.letter}
-                onChange={handleYellowLetterChange(index)}
-                maxLength={1}
-                className={`w-20 uppercase border border-gray-400 rounded mr-4 yellow-letter-input ${yellow.letter ? 'has-letter' : ''}`}
-            />
-            <span className={"label"}>Positions:</span>
-            <input
-                type="text"
-                value={yellow.positions}
-                onChange={handleYellowPositionsChange(index)}
-                maxLength={5}
-                className={`w-60 uppercase border border-gray-400 rounded mr-4 yellow-positions-input ${yellow.positions ? 'has-letter' : ''} positions-box`}
-                placeholder='nums'
-            />
-        </div>
-    ))}
-</div>
-
-
-
-            <div className="input-group" id='grey'>
-                <label className="input-label">Grey Letters</label>
-                <input
-                    type="text"
-                    value={greys}
-                    onChange={handleGreyChange}
-                    className={`grey-input ${greys ? 'has-letter' : ''}`}
-                    placeholder='letters here'
-                />
+            <div className="input-answer-group horizontal" id='colors'>
+                {currentColors.map((color, index) => (
+                    <div key={index} className="color-selection">
+                        <select
+                            value={color}
+                            onChange={handleColorChange(index)}
+                            className="color-select"
+                        >
+                            <option value="green">Green</option>
+                            <option value="yellow">Yellow</option>
+                            <option value="grey">Grey</option>
+                        </select>
+                    </div>
+                ))}
             </div>
 
-            <div className="reset-btn-group">
-                <button type="button" onClick={handleReset} className="custom-button">Reset Game</button>
-            </div>
+            <button type="button" onClick={handleSubmitGuess} className="custom-button">Submit Guess</button>
+            <button type="button" onClick={handleReset} className="custom-button">Reset Game</button>
         </form>
     );
 }
