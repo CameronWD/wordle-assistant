@@ -7,10 +7,12 @@
 @import 'GameAssistant.scss';
 
 body {
-	background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+	// background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
 	background-size: 400% 400%;
 	animation: gradient 4s ease infinite;
+	background-color: #121213;
 	height: 100vh;
+	color: white;
     font-size: 1rem;
 	font-weight: 500;
     font-family: 'Libre Franklin', 'Comic Sans MS', 'Comic Sans', sans-serif

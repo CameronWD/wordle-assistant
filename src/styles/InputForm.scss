@@ -3,8 +3,22 @@
 
     .input-group {
         padding: 1rem;
-        border: 2px solid #000; 
-        background-color: pink;
+        border: 2px solid white; 
+        background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+        background-size: 400% 400%;
+        animation: gradient 10s ease infinite;
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
 
         &.horizontal {
             display: flex;
@@ -23,7 +37,7 @@
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    border: 1px solid #000;
+                    border: 1px solid white;
                     width: 3rem;
                     height: 3rem; 
                     text-transform: uppercase;
@@ -34,13 +48,13 @@
                     line-height: 1.5rem;
 
                     &.grey {
-                        background-color: grey;
+                        background-color: #818384;
                     }
                     &.yellow {
-                        background-color: yellow;
+                        background-color: #D3B964;
                     }
                     &.green {
-                        background-color: green;
+                        background-color: #6AA761;
                     }
                 }
             }
@@ -66,13 +80,13 @@
             font-size: 1.5rem; 
 
             &.green {
-                background-color: green;
+                background-color: #6AA761;
             }
             &.yellow {
-                background-color: yellow;
+                background-color: #D3B964;
             }
             &.grey {
-                background-color: grey;
+                background-color: #818384;
             }
         }
     }
@@ -84,7 +98,7 @@
         margin-right: 1rem;
         cursor: pointer;
         border-radius: 20px;
-        padding: 10px;
+        padding: 1rem;
         line-height: 1;
         transition: transform 200ms, background 200ms;
         background: linear-gradient(90deg, yellow, orange);
@@ -102,4 +116,16 @@
         background: none;
         padding: 1.25rem;
     }
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
 }
