@@ -3,57 +3,55 @@ import '../styles/InputForm.scss';
 
 function InputForm({ onUpdate, onReset }) {
     const [currentGuess, setCurrentGuess] = useState(Array(5).fill(''));
-    const [currentColors, setCurrentColors] = useState(Array(5).fill('grey'));
+    const [currentColours, setCurrentColours] = useState(Array(5).fill('grey'));
     const [guesses, setGuesses] = useState([]);
     const inputRefs = useRef([]);
 
     useEffect(() => {
         inputRefs.current = inputRefs.current.slice(0, currentGuess.length);
-    }, [currentGuess.length])
+    }, [currentGuess.length]);
 
     const handleLetterChange = (index) => (event) => {
         const newGuess = [...currentGuess];
         newGuess[index] = event.target.value.toLowerCase();
         setCurrentGuess(newGuess);
 
-        if(newGuess[index].length === 1 && index < currentGuess.length - 1) {
+        if (newGuess[index].length === 1 && index < currentGuess.length - 1) {
             inputRefs.current[index + 1].focus();
         }
     };
 
-    const handleColorChange = (index) => (event) => {
-        const newColors = [...currentColors];
-        newColors[index] = event.target.value;
-        setCurrentColors(newColors);
+    const cycleColour = (index) => {
+        if (currentGuess[index] !== '') {
+            const nextColour = currentColours[index] === 'grey' ? 'yellow' : currentColours[index] === 'yellow' ? 'green' : 'grey';
+            const newColours = [...currentColours];
+            newColours[index] = nextColour;
+            setCurrentColours(newColours);
+        }
     };
 
     const handleSubmitGuess = () => {
-        if (currentGuess.join('').length === 5 && !currentColors.includes('')) {
-            const greens = currentGuess.map((letter, idx) => currentColors[idx] === 'green' ? letter : '').filter(Boolean);
-            const yellowLetters = currentGuess.map((letter, idx) => currentColors[idx] === 'yellow' ? letter : '').filter(Boolean);
-            const greys = currentGuess.filter((letter, idx) => currentColors[idx] === 'grey');
-
-            const yellows = yellowLetters.map(letter => ({
-                letter,
-                positions: currentGuess.reduce((acc, curr, idx) => {
-                    if (curr === letter && currentColors[idx] !== 'green') {
-                        acc.push(idx + 1);
-                    }
-                    return acc;
-                }, [])
-            }));
+        if (currentGuess.join('').length === 5 && !currentColours.includes('')) {
+            const greens = currentColours.map((Colour, idx) => Colour === 'green' ? currentGuess[idx] : '');
+            const yellows = currentGuess.reduce((acc, letter, idx) => {
+                if (currentColours[idx] === 'yellow') {
+                    acc.push({ letter, positions: [idx + 1] });
+                }
+                return acc;
+            }, []);
+            const greys = currentGuess.filter((letter, idx) => currentColours[idx] === 'grey');
 
             const possibleWordsCount = onUpdate(greens, yellows, greys, currentGuess.join(''));
-            setGuesses([...guesses, { guess: currentGuess, colors: currentColors, possibleWords: possibleWordsCount }]);
+            setGuesses([...guesses, { guess: currentGuess, Colours: currentColours, possibleWords: possibleWordsCount }]);
             setCurrentGuess(Array(5).fill(''));
-            setCurrentColors(Array(5).fill('grey'));
+            setCurrentColours(Array(5).fill('grey'));
         }
     };
 
     const handleReset = () => {
         onReset();
         setCurrentGuess(Array(5).fill(''));
-        setCurrentColors(Array(5).fill('grey'));
+        setCurrentColours(Array(5).fill('grey'));
         setGuesses([]);
     };
 
@@ -63,7 +61,7 @@ function InputForm({ onUpdate, onReset }) {
                 <div key={index} className="guess-entry">
                     <div className="submitted-guess">
                         {entry.guess.map((letter, idx) => (
-                            <div key={idx} className={`guess-box ${entry.colors[idx]}`}>{letter.toUpperCase()}</div>
+                            <div key={idx} className={`guess-box ${entry.Colours[idx]}`}>{letter.toUpperCase()}</div>
                         ))}
                     </div>
                     <div className="possible-words-count">
@@ -80,25 +78,10 @@ function InputForm({ onUpdate, onReset }) {
                             value={letter}
                             onChange={handleLetterChange(index)}
                             maxLength={1}
-                            className="guess-input"
+                            className={`guess-input ${currentColours[index]}`}
                             ref={el => inputRefs.current[index] = el}
+                            onClick={() => cycleColour(index)}
                         />
-                    </div>
-                ))}
-            </div>
-
-            <div className="input-answer-group horizontal" id='colors'>
-                {currentColors.map((color, index) => (
-                    <div key={index} className="color-selection">
-                        <select
-                            value={color}
-                            onChange={handleColorChange(index)}
-                            className="color-select"
-                        >
-                            <option value="green">Green</option>
-                            <option value="yellow">Yellow</option>
-                            <option value="grey">Grey</option>
-                        </select>
                     </div>
                 ))}
             </div>

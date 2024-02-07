@@ -1,35 +1,6 @@
 .input-form {
     border-radius: 1px;
 
-    .input-answer-group {
-        padding: 1rem;
-        border: 2px solid #000;
-        margin-bottom: 1rem;
-        background-color: purple;
-
-        &.horizontal {
-            display: flex;
-            justify-content: center;
-        }
-
-        .color-selection {
-            padding: 2px;
-            font-size: 0.75rem;
-        }
-        .letter-input {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 0 10px; 
-        .color-select {
-            padding: 1rem;
-            border: 1px solid #000;
-            border-radius: 1px;
-            text-transform: uppercase;
-        }
-        }
-    }
-
     .input-group {
         padding: 1rem;
         border: 2px solid #000; 
@@ -38,89 +9,70 @@
         &.horizontal {
             display: flex;
             justify-content: center;
+            align-items: center;
+            margin-bottom: 1rem;
 
             .letter-input {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                margin: 0 10px; 
+                justify-content: center;
+                margin: 0 5px; 
 
                 .guess-input {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                     border: 1px solid #000;
-                    width: 20px;
+                    width: 1.5rem;
+                    height: 1.5rem; 
                     text-transform: uppercase;
                     border-radius: 1px;
-                    margin-bottom: 5px; 
+                    cursor: pointer; 
+                    font-size: 1rem; 
+                    text-align: center;
+                    line-height: 1.5rem;
 
-                    &.has-letter {
-                        background-color: green; 
+                    &.grey {
+                        background-color: grey;
                     }
-                }
-
-                .color-select {
-                    padding: 1rem;
-                    border: 1px solid #000;
-                    border-radius: 1px;
-                    text-transform: uppercase;
+                    &.yellow {
+                        background-color: yellow;
+                    }
+                    &.green {
+                        background-color: green;
+                    }
                 }
             }
         }
     }
 
-    #green {
-        background-color: grey;
-        padding: 1rem;
-        border-top: 4px solid #000; 
-    }
-    #yellow {
-        background-color: green;
-        padding: 1rem;
-        text-align: center; 
-    }
-    #grey {
-        background-color: yellow;
-        padding: 1rem;
-        border-bottom: 4px solid #000; 
-    }
+    .submitted-guess {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 10px;
+    
+        .guess-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            border: 1px solid #000;
+            margin-right: 4px;
+            border-radius: 1px;
+            font-size: 1rem; 
 
-    .input-label {
-        padding-right: 2rem;
-        font-weight: 500;
-    }
-
-    .green-input, .yellow-letter-input, .yellow-positions-input {
-        border: 1px solid #000; 
-        margin-right: 4px;
-        width: 20px; 
-        text-transform: uppercase;
-        border-radius: 1px;
-
-        &.has-letter {
-            background-color: green; 
+            &.green {
+                background-color: green;
+            }
+            &.yellow {
+                background-color: yellow;
+            }
+            &.grey {
+                background-color: grey;
+            }
         }
-    }
-
-    .positions-box {
-        width: 5rem;
-    }
-    .yellow-letter-input, .yellow-positions-input {
-        &.has-letter {
-            background-color: yellow; 
-        }
-    }
-
-    .grey-input {
-        width: 10rem; 
-        text-transform: uppercase;
-        border: 1px solid #000; 
-        &.has-letter {
-            background-color: grey; 
-        }
-    }
-
-    .yellow-letter-group {
-        margin-top: 1rem; 
-        text-align: center; 
     }
 
     .custom-button {
@@ -135,7 +87,7 @@
         transition: transform 200ms, background 200ms;
         background: linear-gradient(90deg, yellow, orange);
         background-size: 400% 400%;
-	    animation: gradient 8s ease infinite;
+        animation: gradient 8s ease infinite;
         color: #000000;
         box-shadow: 0 0 0 2px #000000 inset;
 
@@ -148,30 +100,4 @@
         background: none;
         padding: 1.25rem;
     }
-    .submitted-guess {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 10px;
-    
-        .guess-box {
-            width: 20px;
-            height: 20px;
-            line-height: 20px;
-            text-align: center;
-            border: 1px solid #000;
-            margin-right: 4px;
-            border-radius: 1px;
-            
-            &.green {
-                background-color: green;
-            }
-            &.yellow {
-                background-color: yellow;
-            }
-            &.grey {
-                background-color: grey;
-            }
-        }
-    }
-    
 }
